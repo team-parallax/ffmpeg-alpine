@@ -1,5 +1,5 @@
 services:
-  - dockere:dind
+  - docker:dind
 
 image: docker:latest
 
