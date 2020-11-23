@@ -1,0 +1,24 @@
+services:
+  - dockere:dind
+
+image: docker:latest
+
+variables:
+  IMAGE: ${IMAGE_BASE_NAME}
+  DOCKER_HOST: tcp://localhost:2375
+  DOCKER_PASSWORD: ${DOCKER_PASSWORD}
+  DOCKER_USER: ${DOCKER_USER}
+  DOCKER_TLS_CERTDIR: ""
+  REGISTRY: ${REGISTRY}
+
+stages:
+  - build
+
+built_master_tagged:
+  stage: build
+  script:
+    - echo -n "${DOCKER_PASSWORD}" | docker login -u ${DOCKER_USER} --password-stdin ${REGISTRY}
+    - docker build -t ${IMAGE}:${CI_COMMIT_TAG} -f ./Dockerfile .
+    - docker push ${IMAGE} docker logout
+  only:
+   - tags
