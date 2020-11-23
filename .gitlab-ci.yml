@@ -22,3 +22,4 @@ built_master_tagged:
     - docker push ${IMAGE} docker logout
   only:
    - tags
+   - master
